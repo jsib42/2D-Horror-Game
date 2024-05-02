@@ -25,42 +25,52 @@ class character:
         self.Name = name
         self.PosX = X
         self.PosY = Y
-        self.dialouge_spoken = []
-        self.dialouge = []
+        self.dialog_spoken = []
+        self.dialog = []
         self.can_move = False
+        self.dialog_index = 0
 
         self.id = f"{self.Name}"
-        self.img = pygame.image.load(f"CharacterPixelArt/{self.id}_scary.png").convert_alpha()
+        self.img = pygame.image.load(f"CharacterPixelArt/{self.id}_front.png").convert_alpha()
         self.img = pygame.transform.scale_by(self.img, 5)
-        self.initialize_dialouge()
+        self.initialize_dialog()
 
-    def initialize_dialouge(self):
-        file = open(f"CharacterDialouge/{self.id}.txt")
+    def initialize_dialog(self):
+        file = open(f"CharacterDialog/{self.id}.txt")
         #print("File Opened")
         while True:
             line = file.readline()
             if not line:
                 break
             #print(line)
-            self.dialouge.append(line)
-            self.dialouge_spoken.append(False)            
+            self.dialog.append(line)
+            self.dialog_spoken.append(False)            
         file.close()
         #print("File Closed")
 
-    def get_dialouge_spoken(self, index):
-        return self.dialouge_spoken[index]
+    def get_dialog_spoken(self, index):
+        return self.dialog_spoken[index]
 
-    def set_dialouge_spoken(self, index):
-        self.dialouge_spoken[index] == True
+    def get_index(self):
+        return self.dialog_index
 
-    def get_dialouge(self, index):
-        return self.dialouge[index]
+    def inc_index(self):
+        self.dialog_index = self.dialog_index + 1
+
+    def set_dialog_spoken(self, index):
+        self.dialog_spoken[index] == True
+
+    def get_dialog(self, index):
+        return self.dialog[index]
 
     def toggle_move(self):
         if self.can_move == False:
             self.can_move = True
         elif self.can_move == True:
             self.can_move = False
+
+    def get_pos(self):
+        return self.PosX, self.PosY
 
     def handle_keys(self):
         key = pygame.key.get_pressed()
