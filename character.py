@@ -1,3 +1,5 @@
+import pygame
+
 class character:
     """
 
@@ -21,13 +23,14 @@ class character:
         """
 
         self.Name = name
-        self.PosX = 0
-        self.PosY = 0
+        self.PosX = 100
+        self.PosY = 100
         self.dialouge = []
         self.can_move = False
 
         self.id = f"{self.Name}"
         self.img = pygame.image.load(f"CharacterPixelArt/{self.id}.png").convert_alpha()
+        self.img = pygame.transform.scale_by(self.img, 2)
 
 
 
@@ -36,3 +39,18 @@ class character:
             self.can_move = True
         elif self.can_move == True:
             self.can_move = False
+
+    def handle_keys(self):
+        key = pygame.key.get_pressed()
+        dist = 5
+        if key[pygame.K_a]:
+            self.PosX = self.PosX - dist
+        if key[pygame.K_d]:
+            self.PosX = self.PosX + dist
+        if key[pygame.K_w]:
+            self.PosY = self.PosY - dist
+        if key[pygame.K_s]:
+            self.PosY = self.PosY + dist
+    
+    def draw(self, canvas):
+        canvas.blit(self.img, (self.PosX, self.PosY))
