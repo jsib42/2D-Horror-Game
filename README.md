@@ -1,2 +1,5 @@
 # 2D-Horror-Game
-Turn based game for CS 4398
+2D Horror Game for CS 4398
+
+By: Jonathan Sibbett
+Art by: Lara Aviado
