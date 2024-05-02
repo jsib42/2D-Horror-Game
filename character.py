@@ -14,7 +14,7 @@ class character:
 
     """
 
-    def __init__(self, name = "N/A"):
+    def __init__(self, name = "N/A", X = 0, Y = 0):
 
         """
 
@@ -23,22 +23,54 @@ class character:
         """
 
         self.Name = name
-        self.PosX = 100
-        self.PosY = 100
-        self.dialouge = []
+        self.PosX = X
+        self.PosY = Y
+        self.dialog_spoken = []
+        self.dialog = []
         self.can_move = False
+        self.dialog_index = 0
 
         self.id = f"{self.Name}"
-        self.img = pygame.image.load(f"CharacterPixelArt/{self.id}.png").convert_alpha()
-        self.img = pygame.transform.scale_by(self.img, 2)
+        self.img = pygame.image.load(f"CharacterPixelArt/{self.id}_front.png").convert_alpha()
+        self.img = pygame.transform.scale_by(self.img, 5)
+        self.initialize_dialog()
 
+    def initialize_dialog(self):
+        file = open(f"CharacterDialog/{self.id}.txt")
+        #print("File Opened")
+        while True:
+            line = file.readline()
+            if not line:
+                break
+            #print(line)
+            self.dialog.append(line)
+            self.dialog_spoken.append(False)            
+        file.close()
+        #print("File Closed")
 
+    def get_dialog_spoken(self, index):
+        return self.dialog_spoken[index]
+
+    def get_index(self):
+        return self.dialog_index
+
+    def inc_index(self):
+        self.dialog_index = self.dialog_index + 1
+
+    def set_dialog_spoken(self, index):
+        self.dialog_spoken[index] == True
+
+    def get_dialog(self, index):
+        return self.dialog[index]
 
     def toggle_move(self):
         if self.can_move == False:
             self.can_move = True
         elif self.can_move == True:
             self.can_move = False
+
+    def get_pos(self):
+        return self.PosX, self.PosY
 
     def handle_keys(self):
         key = pygame.key.get_pressed()
@@ -53,4 +85,6 @@ class character:
             self.PosY = self.PosY + dist
     
     def draw(self, canvas):
+        # print(self.PosX)
+        # print(self.PosY)
         canvas.blit(self.img, (self.PosX, self.PosY))
