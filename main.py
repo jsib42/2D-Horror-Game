@@ -2,7 +2,7 @@ import pygame_widgets, pygame, ctypes, sys
 from button import *
 from settings import *
 from character import *
-from text import *
+from background_manager import *
 
 
 class Game:
@@ -10,12 +10,13 @@ class Game:
     def __init__(self):
         pygame.init()
         self.canvas = pygame.display.set_mode((1600,900))
+        self.BM = background_manager()
         pygame.display.set_caption(" TBD ")
         self.exit = False
         self.game_state = "main_menu"
         self.clock = pygame.time.Clock()
 
-        self.character = character("main_front")
+        self.character = character("main")
         self.get_images()
         self.create_buttons()
 
@@ -48,6 +49,7 @@ class Game:
                 self.canvas.draw_text()
 
             if self.game_state == "in_game":
+                self.BM.get_backgrounds()
                 key = pygame.key.get_pressed()
                 if key[pygame.K_ESCAPE]:
                     paused = True
@@ -73,7 +75,8 @@ class Game:
                         
                         pygame.display.update()
                         self.clock.tick(FPS)
-                            
+
+                self.BM.show_background(self.canvas)      
                 self.character.draw(self.canvas)
                 self.character.handle_keys()
 
