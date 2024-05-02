@@ -14,7 +14,7 @@ class character:
 
     """
 
-    def __init__(self, name = "N/A"):
+    def __init__(self, name = "N/A", X = 0, Y = 0):
 
         """
 
@@ -23,29 +23,29 @@ class character:
         """
 
         self.Name = name
-        self.PosX = 100
-        self.PosY = 100
+        self.PosX = X
+        self.PosY = Y
         self.dialouge_spoken = []
         self.dialouge = []
         self.can_move = False
 
         self.id = f"{self.Name}"
-        self.img = pygame.image.load(f"CharacterPixelArt/{self.id}_front.png").convert_alpha()
+        self.img = pygame.image.load(f"CharacterPixelArt/{self.id}_scary.png").convert_alpha()
         self.img = pygame.transform.scale_by(self.img, 5)
         self.initialize_dialouge()
 
     def initialize_dialouge(self):
         file = open(f"CharacterDialouge/{self.id}.txt")
-        print("File Opened")
+        #print("File Opened")
         while True:
             line = file.readline()
             if not line:
                 break
-            print(line)
+            #print(line)
             self.dialouge.append(line)
             self.dialouge_spoken.append(False)            
         file.close()
-        print("File Closed")
+        #print("File Closed")
 
     def get_dialouge_spoken(self, index):
         return self.dialouge_spoken[index]
@@ -75,4 +75,6 @@ class character:
             self.PosY = self.PosY + dist
     
     def draw(self, canvas):
+        # print(self.PosX)
+        # print(self.PosY)
         canvas.blit(self.img, (self.PosX, self.PosY))
