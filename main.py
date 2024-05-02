@@ -3,6 +3,7 @@ from button import *
 from settings import *
 from character import *
 from background_manager import *
+from dialog_manager import *
 
 
 class Game:
@@ -11,12 +12,13 @@ class Game:
         pygame.init()
         self.canvas = pygame.display.set_mode((1600,900))
         self.BM = background_manager()
-        pygame.display.set_caption(" TBD ")
+        self.dialog = dialog()
+        pygame.display.set_caption(" REDACTED ")
         self.exit = False
         self.game_state = "main_menu"
         self.clock = pygame.time.Clock()
 
-        self.character = character("main")
+        self.character = character("spirit", 70, 520)
         self.get_images()
         self.create_buttons()
 
@@ -31,7 +33,7 @@ class Game:
                     sys.exit()
 
             if self.game_state == "main_menu":
-                self.canvas.blit(self.title_name_image, (800, 100))
+                self.canvas.blit(self.title_name_image, (600, 50))
 
                 if self.play_button.draw(self.canvas):
                     self.game_state = "in_game"
@@ -50,6 +52,9 @@ class Game:
 
             if self.game_state == "in_game":
                 self.BM.get_backgrounds()
+                self.BM.show_background(self.canvas) 
+                self.character.draw(self.canvas)
+                self.character.handle_keys()
                 key = pygame.key.get_pressed()
                 if key[pygame.K_ESCAPE]:
                     paused = True
@@ -75,10 +80,27 @@ class Game:
                         
                         pygame.display.update()
                         self.clock.tick(FPS)
+                if key[pygame.K_t]:
+                    dialog_flag = True
+                    self.character.toggle_move()
+                    while dialog_flag:
+                        key = pygame.key.get_pressed()
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                sys.exit()
+                            self.dialog.draw(self.canvas)   
+                            if key[pygame.K_SPACE] :
+                                dialog_flag = False
+                                self.character.toggle_move()
 
-                self.BM.show_background(self.canvas)      
-                self.character.draw(self.canvas)
-                self.character.handle_keys()
+                            pygame.display.update()
+                            self.clock.tick(FPS)
+
+                
+
+                
+
 
             pygame_widgets.update(events)
             pygame.display.update()
