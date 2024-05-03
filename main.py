@@ -100,7 +100,7 @@ class Game:
                     self.eb_dialog.set_used()
                     dialog_flag = True
                     self.character.toggle_move()
-                    self.dialog = dialog(self.character.get_dialog(self.character.get_index()))
+                    self.dialog = dialog(self.character.get_dialog(self.character.get_index()), self.character.Name)
                     while dialog_flag:
                         key = pygame.key.get_pressed()
                         for event in pygame.event.get():
