@@ -29,9 +29,10 @@ class character:
         self.dialog = []
         self.can_move = False
         self.dialog_index = 0
+        self.is_monster = False
 
         self.id = f"{self.Name}"
-        self.img = pygame.image.load(f"CharacterPixelArt/{self.id}_front.png").convert_alpha()
+        self.img = pygame.image.load(f"CharacterPixelArt/{self.id}.png").convert_alpha()
         self.img = pygame.transform.scale_by(self.img, 5)
         self.initialize_dialog()
 
@@ -72,6 +73,9 @@ class character:
     def get_pos(self):
         return self.posX, self.posY
 
+    def set_monster(self):
+        self.is_monster = True
+
     def handle_keys(self):
         key = pygame.key.get_pressed()
         dist = 5
@@ -83,8 +87,20 @@ class character:
             self.posY = self.posY - dist
         if key[pygame.K_s]:
             self.posY = self.posY + dist
+
+    def move_monster(self, speed, X, Y):
+        if Y < self.posY:
+            self.posY = self.posY - speed
+            print("moved up")
+        if X > self.posX:
+            self.posX = self.posX + speed
+            print("moved right")
+        if X < self.posX:
+            self.posX = self.posX - speed
+            print("moved left")
+        if Y > self.posY:
+            self.posY = self.posY + speed
+            print("moved down")
     
     def draw(self, canvas):
-        # print(self.posX)
-        # print(self.posY)
         canvas.blit(self.img, (self.posX, self.posY))
