@@ -7,8 +7,8 @@ class character:
 
     Attributes
         Name (str): Characters Name
-        PosX (int): X position of the character on screen
-        PosY (int): Y position of the character on screen
+        posX (int): X position of the character on screen
+        posY (int): Y position of the character on screen
         dialouge (string array): array of dialouge the character is going to say
         can_move (bool): Flag for if the character is locked in place.
 
@@ -23,8 +23,8 @@ class character:
         """
 
         self.Name = name
-        self.PosX = X
-        self.PosY = Y
+        self.posX = X
+        self.posY = Y
         self.dialog_spoken = []
         self.dialog = []
         self.can_move = False
@@ -70,21 +70,21 @@ class character:
             self.can_move = False
 
     def get_pos(self):
-        return self.PosX, self.PosY
+        return self.posX, self.posY
 
     def handle_keys(self):
         key = pygame.key.get_pressed()
         dist = 5
         if key[pygame.K_a]:
-            self.PosX = self.PosX - dist
+            self.posX = self.posX - dist
         if key[pygame.K_d]:
-            self.PosX = self.PosX + dist
+            self.posX = self.posX + dist
         if key[pygame.K_w]:
-            self.PosY = self.PosY - dist
+            self.posY = self.posY - dist
         if key[pygame.K_s]:
-            self.PosY = self.PosY + dist
+            self.posY = self.posY + dist
     
     def draw(self, canvas):
-        # print(self.PosX)
-        # print(self.PosY)
-        canvas.blit(self.img, (self.PosX, self.PosY))
+        # print(self.posX)
+        # print(self.posY)
+        canvas.blit(self.img, (self.posX, self.posY))

@@ -4,9 +4,9 @@ from settings import *
 class dialog:
     def __init__(self, text = "N/A"):
         self.width = 800
-        self.height = 300
+        self.height = 250
         self.posX = 700
-        self.posY = 550
+        self.posY = 600
         self.line = text
         self.font = pygame.font.Font(None, 24)
         self.text_color = BLACK
