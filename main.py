@@ -29,6 +29,7 @@ class Game:
         self.eb_right = event_box(1550, 300, 50, 100)
         self.get_images()
         self.create_buttons()
+        self.spawn_mon = event_box(800, 350, 50, 200)
 
     def run(self):
         
@@ -65,6 +66,7 @@ class Game:
                 self.eb_up.draw_box(self.canvas)
                 self.eb_right.draw_box(self.canvas)
                 self.BM.show_background(self.canvas) 
+                self.spawn_mon.draw_box(self.canvas)
                 self.character.draw(self.canvas)
                 self.character.handle_keys()
                 key = pygame.key.get_pressed()
@@ -119,6 +121,52 @@ class Game:
 
                 if pygame.Rect(player_x, player_y, 50, 50).colliderect(self.eb_right.get_rect()) and self.eb_right.get_used() == False:
                     self.eb_right.set_used
+                
+                if pygame.Rect(player_x, player_y, 50, 50).colliderect(self.spawn_mon.get_rect()) and self.spawn_mon.get_used() == False:
+                    self.spawn_mon.set_used()
+                    monster = character("ghost", 70, 520)
+                    self.dialog = dialog(monster.get_dialog(monster.dialog_index), monster.Name)
+                    dialog_flag = True
+                    self.character.toggle_move()
+                    monster.toggle_move()
+                    monster.set_monster()
+                    last = pygame.time.get_ticks()
+
+                    while dialog_flag:
+                        key = pygame.key.get_pressed()
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                sys.exit()
+                            self.dialog.draw(self.canvas)   
+                            if key[pygame.K_SPACE] :
+                                dialog_flag = False
+                                self.character.toggle_move()
+                                monster.toggle_move()
+                            pygame.display.update()
+                            self.clock.tick(FPS)
+
+                    while True:
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                sys.exit()
+                            self.BM.show_background(self.canvas) 
+                            player_x, player_y = self.character.get_pos()
+                            
+                            cooldown = 100
+                            now = pygame.time.get_ticks()
+                            if now - last >= cooldown:
+                                last = now
+                                monster.move_monster(7, player_x, player_y)
+                            
+                            monster.draw(self.canvas)
+                            self.character.draw(self.canvas)
+                            self.character.handle_keys()
+                            pygame.display.update()
+                            pygame_widgets.update(events)
+                            self.clock.tick(FPS)
+
 
 
                 
